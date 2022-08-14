@@ -1,9 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import bodyParser from 'body-parser';
 
-import mongoDbConnection from './config/database.js';
 import env from './utils/env.js';
+import mongoDbConnection from './config/database.js';
+import routes from './services/all_routes.js';
 import errorHandler from './middlewares/errorHandler.js';
 
 var app = express();
@@ -14,8 +16,10 @@ mongoDbConnection(mongoose, env.uri).connectToMongo();
 app.use(cors())
 app.use("/images", express.static("images"));
 
+app.use(bodyParser.json())
+
 // setup routes
-// routes(app, express);
-// app.use(errorHandler);
+routes(app);
+app.use(errorHandler);
 
 app.listen(env.port, () => console.log("Listening to port", env.port));
