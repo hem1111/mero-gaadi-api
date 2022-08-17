@@ -121,7 +121,7 @@ export default function ownerController() {
   });
 
   const getOwner = asyncHandler(async (req, res, next) => {
-    const user = await ownerModel.findById(req.context.userId).exec();
+    const user = await ownerModel.findById(req.context.ownerId).exec();
     if (!user) {
       const error = new Error("user not found");
       error.statusCode = 404;
@@ -142,7 +142,7 @@ export default function ownerController() {
   const updateOwner = asyncHandler(async (req, res, next) => {
     const { name, address, contactNumber } = new ownerModel(req.body);
 
-    const user = await ownerModel.findById(req.context.userId).exec();
+    const user = await ownerModel.findById(req.context.ownerId).exec();
 
     if (name && name !== "") user.name = name;
     if (address && address !== "") user.address = address;
