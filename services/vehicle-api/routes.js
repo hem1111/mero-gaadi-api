@@ -10,6 +10,7 @@ export default function vehicleRouter() {
   router.get("/:id", controller().getVehicleDetails);
   router.put("/:id", uploadImage, controller().updateVehicleDetails);
   router.delete("/:id", controller().deleteVehicle);
+  router.get("/:id/all", controller().getVehicleAllDetails);
 
   return router;
 }

@@ -21,3 +21,19 @@ const VehicleSchema = new mongoose.Schema({
 });
 
 export const vehicleModel = new mongoose.model("vehicle", VehicleSchema);
+
+const VehicleTravelSchema = new mongoose.Schema({
+  vehicleId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "vehicle",
+  },
+  lat: String,
+  lng: String,
+  dateAndTime: String,
+});
+
+export const vehicleTravelModel = new mongoose.model(
+  "vehicle_travel",
+  VehicleTravelSchema
+);

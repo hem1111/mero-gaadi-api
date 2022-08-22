@@ -1,4 +1,4 @@
-import { vehicleModel } from "./model.js";
+import { vehicleModel, vehicleTravelModel } from "./model.js";
 import { asyncHandler } from "../../middlewares/asyncHandler.js";
 
 export default function vehicleController() {
@@ -58,8 +58,33 @@ export default function vehicleController() {
     });
   });
 
+  const getVehicleAllDetails = asyncHandler(async (req, res, next) => {
+    const vehicle = await vehicleModel.findById(req.params.id).exec();
+    if (!vehicle) {
+      const error = new Error("vehicle not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    if (vehicle.ownerId.toString() !== req.context.ownerId) {
+      const error = new Error("you are forbidden to access");
+      error.statusCode = 403;
+      return next(error);
+    }
+
+    const history = await vehicleTravelModel
+      .find({ vehicleId: vehicle._id })
+      .exec();
+
+    res.status(200).json({
+      success: true,
+      data: { vehicle: vehicle, travelHistory: history },
+    });
+  });
+
   const updateVehicleDetails = asyncHandler(async (req, res, next) => {
     const vehicleInput = new vehicleModel(req.body);
+    console.log;
 
     const vehicleId = req.params.id;
 
@@ -121,5 +146,6 @@ export default function vehicleController() {
     getVehicleDetails,
     updateVehicleDetails,
     deleteVehicle,
+    getVehicleAllDetails,
   };
 }
