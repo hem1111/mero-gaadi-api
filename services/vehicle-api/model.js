@@ -7,7 +7,7 @@ const VehicleSchema = new mongoose.Schema({
     ref: "owners",
   },
   currentDriver: String,
-  number: Number,
+  number: String,
   type: String,
   image: String,
   createdAt: {
