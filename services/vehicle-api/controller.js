@@ -140,6 +140,23 @@ export default function vehicleController() {
     });
   });
 
+  const addVehicleLocation = asyncHandler(async (req, res, next) => {
+    const input = new vehicleTravelModel(req.body);
+    input.vehicleId = req.params.id;
+
+    const locate = await vehicleTravelModel.create(input);
+    if (!locate) {
+      const error = new Error("error adding vehicle location");
+      error.statusCode = 500;
+      return next(error);
+    }
+
+    res.status(201).json({
+      success: true,
+      data: "vehicle location added",
+    });
+  });
+
   return {
     listOwnerVehicles,
     addVehicle,
@@ -147,5 +164,6 @@ export default function vehicleController() {
     updateVehicleDetails,
     deleteVehicle,
     getVehicleAllDetails,
+    addVehicleLocation,
   };
 }
